@@ -81,7 +81,7 @@
       top: 10px;
       left: 10px;
       padding: 5px 10px;
-border-radius: 15px;
+      border-radius: 15px;
     }
 
     #start-button {
@@ -91,9 +91,9 @@ border-radius: 15px;
       right: 80px;
       font-size: 1em;
       padding: 5px 10px;
-    background-color: white;
-    color: red;
-border-radius: 15px;
+      background-color: white;
+      color: red;
+      border-radius: 15px;
     }
 
     #end-score {
@@ -123,6 +123,8 @@ border-radius: 15px;
       }
     }
   </style>
+  <!-- เพิ่ม SweetAlert2 CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
 </head>
 <body>
   <div class="container">
@@ -136,33 +138,32 @@ border-radius: 15px;
     </div>
   </div>
 
+  <!-- เพิ่ม SweetAlert2 JS -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script>
     const elementsData = [
-
-  { symbol: "CH₄", name: "แอลเคน" },
-  { symbol: "C₄H₁₀", name: "แอลเคน" },
-  { symbol: "C₅H₁₀", name: "แอลคีน" },
-  { symbol: "C₂H₂", name: "แอลไคน์" },
-  { symbol: "C₄H₆", name: "แอลไคน์" },
-  { symbol: "C₆H₆", name: "อะโรมาติก" },
-  { symbol: "C₆H₅CH₃", name: "อะโรมาติก" },
-  { symbol: "CH₃OH", name: "แอลกอฮอล์" },
-  { symbol: "C₃H₇OH", name: "แอลกอฮอล์" },
-  { symbol: "C₆H₅OH", name: "ฟีนอล" },
-  { symbol: "C₆H₄(OH)₂", name: "ฟีนอล" },
-  { symbol: "CH₃CHO", name: "อัลดีไฮด์" },
-  { symbol: "C₂H₅CHO", name: "อัลดีไฮด์" },
-  { symbol: "CH₃COCH₃", name: "คีโตน" },
-  { symbol: "C₂H₅COCH₃", name: "คีโตน" },
-  { symbol: "CH₃COOH", name: "กรดคาร์บอกซิลิก" },
-  { symbol: "C₂H₅COOH", name: "กรดคาร์บอกซิลิก" },
-  { symbol: "CH₃COOC₂H₅", name: "เอสเทอร์" },
-  { symbol: "CH₃COOC₃H₇", name: "เอสเทอร์" },
-  { symbol: "CH₃NH₂", name: "เอมีน" },
-  { symbol: "C₃H₇NH₂", name: "เอมีน" },
-  { symbol: "CH₃CONH₂", name: "เอไมด์" },
-
-
+      { symbol: "CH₄", name: "แอลเคน" },
+      { symbol: "C₄H₁₀", name: "แอลเคน" },
+      { symbol: "C₅H₁₀", name: "แอลคีน" },
+      { symbol: "C₂H₂", name: "แอลไคน์" },
+      { symbol: "C₄H₆", name: "แอลไคน์" },
+      { symbol: "C₆H₆", name: "อะโรมาติก" },
+      { symbol: "C₆H₅CH₃", name: "อะโรมาติก" },
+      { symbol: "CH₃OH", name: "แอลกอฮอล์" },
+      { symbol: "C₃H₇OH", name: "แอลกอฮอล์" },
+      { symbol: "C₆H₅OH", name: "ฟีนอล" },
+      { symbol: "C₆H₄(OH)₂", name: "ฟีนอล" },
+      { symbol: "CH₃CHO", name: "อัลดีไฮด์" },
+      { symbol: "C₂H₅CHO", name: "อัลดีไฮด์" },
+      { symbol: "CH₃COCH₃", name: "คีโตน" },
+      { symbol: "C₂H₅COCH₃", name: "คีโตน" },
+      { symbol: "CH₃COOH", name: "กรดคาร์บอกซิลิก" },
+      { symbol: "C₂H₅COOH", name: "กรดคาร์บอกซิลิก" },
+      { symbol: "CH₃COOC₂H₅", name: "เอสเทอร์" },
+      { symbol: "CH₃COOC₃H₇", name: "เอสเทอร์" },
+      { symbol: "CH₃NH₂", name: "เอมีน" },
+      { symbol: "C₃H₇NH₂", name: "เอมีน" },
+      { symbol: "CH₃CONH₂", name: "เอไมด์" },
     ];
 
     const pairCount = 5; // จำนวนคู่ต่อรอบ
@@ -179,6 +180,9 @@ border-radius: 15px;
     const rightColumn = document.getElementById("right-column");
     const timerContainer = document.getElementById("timer-container");
     const endScore = document.getElementById("end-score");
+
+    // เพิ่มเสียง effect เมื่อจับคู่ถูกต้อง
+    const correctSound = new Audio('https://js-nonsaad.github.io/pm2.5/Correct.mp3');
 
     // สุ่มลำดับของ Array
     const shuffle = (array) => array.sort(() => Math.random() - 0.5);
@@ -254,6 +258,9 @@ border-radius: 15px;
         remainingPairs = remainingPairs.filter(pair => pair !== matchedPair);
         score++;
 
+        // เล่นเสียงเมื่อจับคู่ถูกต้อง
+        correctSound.play();
+
         if (remainingPairs.length === 0) {
           setTimeout(() => {
             loadNewRound();
@@ -295,6 +302,14 @@ border-radius: 15px;
           gameBoard.style.display = "none";
           endScore.textContent = `Your Score : ${score}`;
           endScore.style.display = "block";
+
+          // แสดงผลคะแนนรวมด้วย SweetAlert2
+          Swal.fire({
+            title: 'เกมจบแล้ว!',
+            text: `คุณได้คะแนนรวม: ${score}`,
+            icon: 'success',
+            confirmButtonText: 'ตกลง'
+          });
         }
       }, 1000);
     };
